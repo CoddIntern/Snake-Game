@@ -13,10 +13,13 @@ class Score(Turtle):
         self.default_y = 600
         self.default_x = 600
 
-    def refresh_score(self, score):
+    def refresh_score(self, score, highest_score):
         self.t.clear()
         self.t.goto(x=0, y=(self.default_y/2 - 30))
-        self.t.write(f"Your Score: {score}",
+        if score > highest_score:
+            highest_score = score
+        self.t.write(f"Your Score: {score} - "
+                     f"Highest Score: {highest_score}",
                 align="center", font=("Arial", 16, "bold"))
 
     def game_over(self):

@@ -3,6 +3,13 @@ from turtle import Turtle, Screen
 from food import Food
 from scoreboard import Score
 
+try:
+    # with open("../../../Desktop/highest_score.txt", "r") as file: #relative path for file on desktop
+    with open("/Users/oluwaseyidavid/Desktop/highest_score.txt", "r") as file: #absolute path for file within game folder
+        file_value = int(file.read())
+except (FileNotFoundError, ValueError):
+    file_value = 0
+
 class Snake:
     def __init__(self):
         """Initializing screen attributes"""
@@ -62,17 +69,23 @@ class Snake:
                 food.refresh()
                 self.extend_snake()
                 score += 1
-                scoreboard.refresh_score(score)
+                scoreboard.refresh_score(score, file_value)
 
             # Collision with wall
             if (head.xcor() > (self.default_x/2 - 20) or head.xcor() < -(self.default_x/2 - 20)
                     or head.ycor() > (self.default_y/2 - 20) or head.ycor() < -(self.default_y/2 - 20)) :
+                if score > file_value:
+                    with open("/Users/oluwaseyidavid/Desktop/highest_score.txt", "w") as updating_file: #absolute path
+                        updating_file.write(str(score))
                 still_playing = False
                 scoreboard.game_over()
 
             # Collision with tail
             for items in snake[1:]:
                 if head.distance(items) < 10:
+                    if score > file_value:
+                        with open("/Users/oluwaseyidavid/Desktop/highest_score.txt", "w") as updating_file: #absolute path
+                            updating_file.write(str(score))
                     still_playing = False
                     scoreboard.game_over()
 
