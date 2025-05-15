@@ -53,6 +53,7 @@ class Snake:
         food = Food()
         score = 0
         scoreboard = Score()
+        scoreboard.refresh_score(score, file_value)
 
         while still_playing:
             self.my_screen.update()
